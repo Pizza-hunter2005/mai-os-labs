@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sstream>
-#include <cstring>
 #include "parent.h"
 
 
