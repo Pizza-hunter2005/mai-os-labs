@@ -29,6 +29,6 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 add_executable(tests tests/test_main.cpp src/parent.cpp)
 
-target_link_libraries(tests ${GTEST_LIBRARIES} pthread)
+target_link_libraries(tests ${GTEST_LIBRARIES})
 
 add_test(NAME ParentChildTest COMMAND tests)

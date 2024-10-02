@@ -18,8 +18,7 @@
 ```
 mkdir build
 cd build
-cmake .
-make
+cmake --build .
 ```
 Запуск тестов
 ```

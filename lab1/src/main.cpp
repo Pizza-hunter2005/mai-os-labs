@@ -1,13 +1,15 @@
-#include "parent.h"
 #include <iostream>
-#include <sstream>
+#include <cstdlib>
+#include "parent.h"
 
 
 int main(void) {
-    std::string filename;
+    setenv("CHILD_BINARY_PATH", "/mai-os-labs/lab1/src/child", 1);
+    std::string filename, filename_out;
     std::cout << "Введите имя файла: ";
     std::cin >> filename;
-    std::ostream& out_stream = std::cout;
-    Parent(filename.c_str(), out_stream);
+    std::cout << "Введите имя файла для вывода: ";
+    std::cin >> filename_out;
+    Parent(filename.c_str(), filename_out.c_str());
     return 0;
 }
