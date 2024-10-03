@@ -1,6 +1,9 @@
 #ifndef OS_LABS_PARENT_H
 #define OS_LABS_PARENT_H
 
-void Parent(const char* filename, const char* temp_output_filename);
+#include <iostream>
+#include <sstream>
+
+void Parent(const char* filename, std::ostream &output = std::cout);
 
 #endif 

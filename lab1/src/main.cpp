@@ -4,12 +4,11 @@
 
 
 int main(void) {
-    setenv("CHILD_BINARY_PATH", "/mai-os-labs/lab1/src/child", 1);
-    std::string filename, filename_out;
+    setenv("CHILD_BINARY_PATH", "/root/mai-os-labs/lab1/build/child", 1);
+    std::string filename;
     std::cout << "Введите имя файла: ";
     std::cin >> filename;
-    std::cout << "Введите имя файла для вывода: ";
-    std::cin >> filename_out;
-    Parent(filename.c_str(), filename_out.c_str());
+    std::ostream& output = std::cout;
+    Parent(filename.c_str(), output);
     return 0;
 }
