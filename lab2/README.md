@@ -18,7 +18,7 @@ cmake --build .
 ```
 ./tests
 ```
-Запуск родительского процесса
+Запуск прораммы
 ```
-./parent
+./main size_threads filename memory_mb
 ```

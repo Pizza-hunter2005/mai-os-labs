@@ -14,11 +14,11 @@ int main(int argc, char* argv[]) {
     int num_threads = std::stoi(argv[1]);
     size_t max_memory_mb = std::stoull(argv[3]);
     std::cout << "Количество потоков: " << num_threads;
-    std::cout << "Ограничение оперативной памяти: " << max_memory_mb;
-    std::cout << "Имя файла с числами: " << filename;
+    std::cout << "\nОграничение оперативной памяти: " << max_memory_mb;
+    std::cout << "\nИмя файла с числами: " << filename;
 
     Hex512 result = average(num_threads, filename, max_memory_mb);
-    std::cout << "Среднее арифметическое: ";
+    std::cout << "\nСреднее арифметическое: ";
     result.print_num();
 
     auto end_of_program = std::chrono::high_resolution_clock::now();
