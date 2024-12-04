@@ -20,7 +20,7 @@ int main(int argc, const char* argv[]) {
         return 1;
     }
  
-    void* shared_mem = mmap(nullptr, mem_size, PROT_READ, MAP_SHARED, shm_fd, 0);
+    void* shared_mem = mmap(nullptr, mem_size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     if (shared_mem == MAP_FAILED) {
         perror("Ошибка при отображении разделяемой памяти");
         close(shm_fd);
@@ -28,14 +28,15 @@ int main(int argc, const char* argv[]) {
     }
 
     close(shm_fd);
-
-    std::istringstream input(static_cast<char*>(shared_mem));
-    float sum = 0.0f;
-    float num = 0.0f;
+    
+    size_t data_size = mem_size - 256;
+    std::istringstream input(std::string(static_cast<char*>(shared_mem), data_size));
+    float num = 0.0f, sum = 0.0f;
     while(input >> num) {
         sum += num;
     }
-    std::cout << sum << std::endl; 
+    char* result = static_cast<char*>(shared_mem) + data_size;
+    snprintf(result, 256, "%.1f\n", sum);
     munmap(shared_mem, mem_size);
     return 0;
 }

@@ -22,7 +22,7 @@ void Parent(const std::string& filename, std::ostream &output){
         return;
     }
     std::string shm_name = "/shared_memory_" + std::to_string(getpid());;
-    const size_t mem_size = info.st_size;
+    const size_t mem_size = info.st_size + 256;
 
     int shm_fd = shm_open(shm_name.c_str(), O_CREAT | O_RDWR, 0666);
     if(shm_fd == -1) {
@@ -54,29 +54,14 @@ void Parent(const std::string& filename, std::ostream &output){
     }
     close(fd_open);
     
-    int pipefd[2];
-    if (pipe(pipefd) == -1) {
-        perror("Ошибка создания канала");
-        return;
-    }
     pid_t pid = fork();
     if (pid == -1) {
         perror("Ошибка создания дочернего процесса");
         munmap(shared_mem, mem_size);
         shm_unlink(shm_name.c_str());
-        close(pipefd[0]);
-        close(pipefd[1]);
         return;
     }
     if (pid == 0) {
-        close(pipefd[0]);
-        if (dup2(pipefd[1], STDOUT_FILENO) == -1) {
-            perror("Ошибка перенаправления в канал");
-            munmap(shared_mem, mem_size);
-            return;
-        }
-        close(pipefd[1]);
-
         std::string mem_size_str = std::to_string(mem_size);
         execl("./child", "./child",shm_name.c_str(), mem_size_str.c_str(), nullptr);
         perror("Ошибка исполнения дочернего процесса");
@@ -84,16 +69,9 @@ void Parent(const std::string& filename, std::ostream &output){
         return;
     }
     else {
-        close(pipefd[1]);
-        char buffer[256];
-        ssize_t bytesRead;
-        //читаем данные из канала в buffer, bytesRead - количество считанных символов, завершаем считанные данные символом конца строоки
-        while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0) {
-            buffer[bytesRead] = '\0';
-            output << buffer;
-        }
-        close(pipefd[0]);
         wait(nullptr);
+        char* result = static_cast<char*>(shared_mem) + info.st_size;
+        output << result;
         munmap(shared_mem, mem_size);
         shm_unlink(shm_name.c_str());
     }

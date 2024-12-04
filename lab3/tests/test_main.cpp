@@ -39,7 +39,7 @@ TEST(ParentChildTest, EmptyFileTest) {
     std::ofstream tmp_file(temp_input_filename);
     tmp_file << "\n";
     tmp_file.close();
-    std::string expected_output = "0\n";
+    std::string expected_output = "0.0\n";
     std::stringstream output;
     Parent(temp_input_filename, output);
     std::string actual_output = output.str();
